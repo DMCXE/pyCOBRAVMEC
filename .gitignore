@@ -17,3 +17,6 @@ dist/
 .eggs/
 __pycache__/
 .DS_Store
+_skbuild/
+.vscode/
+cobravmec/
