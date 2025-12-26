@@ -1,0 +1,9 @@
+w7x_beta3                       !      1st line:   extension of WOUT file
+10 1                            !      2nd line:   k_w, kth  (No. helical wells; mode number)
+T F                             !      3rd line:   l_geom_input, l_tokamak_input
+5                               !      4th line:   nini_zeta (No. initial toroidal angles; or ALPHA labels if _GEOM_INPUT=F .AND. L_TOKAMAK_INPUT=T)
+0.00  1.58  3.14  4.78  5.46    !      5th line:   init_zeta_v (vector of initial toroidal angles (or labels), in degrees)
+5                               !      6th line:   nini_theta (No. initial polidal angles; or ALPHA labels if L_GEOM_INPUT=F .AND. L_TOKAMAK_INPUT=F)  
+0.00  1.58  3.14  4.62  5.00    !      7th line:   init_theta_v (vector of initial poloidal angles (or labels), in degrees)
+5                               !      8th line:   ns_surf (No. surfaces where growth rate is to be computed)
+20  30  40  50  60              !      9th line:   ns_v (vector of surfaces where growth rate is to be computed)

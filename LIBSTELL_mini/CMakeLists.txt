@@ -1,0 +1,46 @@
+# Append all source files to variable stell_sources. As new files are added this must be updated.
+list (APPEND libstell_mini_sources
+	${CMAKE_CURRENT_SOURCE_DIR}/daxpby.f
+        ${CMAKE_CURRENT_SOURCE_DIR}/netcdf_inc.f	
+        ${CMAKE_CURRENT_SOURCE_DIR}/ezcdf.f90
+	${CMAKE_CURRENT_SOURCE_DIR}/functions.f
+	${CMAKE_CURRENT_SOURCE_DIR}/parse_extension.f
+	${CMAKE_CURRENT_SOURCE_DIR}/second0.f
+	${CMAKE_CURRENT_SOURCE_DIR}/spline_cubic_int.f
+	${CMAKE_CURRENT_SOURCE_DIR}/tolower.f90
+	${CMAKE_CURRENT_SOURCE_DIR}/vmec_input.f
+	${CMAKE_CURRENT_SOURCE_DIR}/ezcdf_GenGet.f90
+	${CMAKE_CURRENT_SOURCE_DIR}/getcarg.f90
+	${CMAKE_CURRENT_SOURCE_DIR}/drandn.f
+	${CMAKE_CURRENT_SOURCE_DIR}/ezcdf_GenPut.f90
+	${CMAKE_CURRENT_SOURCE_DIR}/mpi_inc.f
+	${CMAKE_CURRENT_SOURCE_DIR}/spline_akima.f
+	${CMAKE_CURRENT_SOURCE_DIR}/stel_constants.f
+	${CMAKE_CURRENT_SOURCE_DIR}/ezcdf_inqvar.f90
+	${CMAKE_CURRENT_SOURCE_DIR}/mpi_params.f
+	${CMAKE_CURRENT_SOURCE_DIR}/read_wout_mod.f90
+	${CMAKE_CURRENT_SOURCE_DIR}/spline_akima_int.f
+	${CMAKE_CURRENT_SOURCE_DIR}/stel_kinds.f
+	${CMAKE_CURRENT_SOURCE_DIR}/v3_utilities.f
+	${CMAKE_CURRENT_SOURCE_DIR}/vparams.f
+	${CMAKE_CURRENT_SOURCE_DIR}/date_and_computer.f
+	${CMAKE_CURRENT_SOURCE_DIR}/ezcdf_attrib.f90
+	${CMAKE_CURRENT_SOURCE_DIR}/ezcdf_opncls.f90
+	${CMAKE_CURRENT_SOURCE_DIR}/handle_err.f90
+	${CMAKE_CURRENT_SOURCE_DIR}/mpi_sharmem.f90
+	${CMAKE_CURRENT_SOURCE_DIR}/safe_open_mod.f90
+	${CMAKE_CURRENT_SOURCE_DIR}/spline_cubic.f
+	${CMAKE_CURRENT_SOURCE_DIR}/system_mod.f
+	${CMAKE_CURRENT_SOURCE_DIR}/vmec_getenv.f
+	${CMAKE_CURRENT_SOURCE_DIR}/vsvd0.f
+	${CMAKE_CURRENT_SOURCE_DIR}/chfdv.f
+ 	${CMAKE_CURRENT_SOURCE_DIR}/pchdf.f
+ 	${CMAKE_CURRENT_SOURCE_DIR}/pchev.f
+ 	${CMAKE_CURRENT_SOURCE_DIR}/pchez.f
+ 	${CMAKE_CURRENT_SOURCE_DIR}/pchfd.f
+ 	${CMAKE_CURRENT_SOURCE_DIR}/pchim.f
+ 	${CMAKE_CURRENT_SOURCE_DIR}/pchsp.f
+ 	${CMAKE_CURRENT_SOURCE_DIR}/pchst.f
+	${CMAKE_CURRENT_SOURCE_DIR}/mgrid_mod.f
+)
+set (libstell_mini_sources "${libstell_mini_sources}" PARENT_SCOPE)

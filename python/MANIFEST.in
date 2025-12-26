@@ -1,0 +1,4 @@
+include README.md
+include kind_map
+recursive-include fortran_src *.f90
+recursive-include cobravmec *.py
