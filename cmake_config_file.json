@@ -1,3 +1,13 @@
 {
-  "cmake_args": []
+   "cmake_args": [
+    "-DCMAKE_C_COMPILER=gcc",
+    "-DCMAKE_CXX_COMPILER=g++",
+    "-DCMAKE_Fortran_COMPILER=gfortran",
+    "-DSCALAPACK_LIB_NAME=scalapack",
+    "-DNETCDF_INC_PATH=/Users/dmcxe/miniforge3/envs/simsopt/include",
+    "-DNETCDF_LIB_PATH=/Users/dmcxe/miniforge3/envs/simsopt/lib",
+     "-DCMAKE_INSTALL_RPATH_USE_LINK_PATH=FALSE",
+    "-DCMAKE_BUILD_RPATH=$CONDA_PREFIX/lib",
+    "-DCMAKE_INSTALL_RPATH=$CONDA_PREFIX/lib"
+   ]
 }

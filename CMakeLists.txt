@@ -8,6 +8,11 @@ set(CMAKE_VERBOSE_MAKEFILE ON CACHE BOOL "ON")
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
+if (SKBUILD)
+  # Conda LDFLAGS already inject an rpath; avoid duplicate LC_RPATH entries.
+  set(CMAKE_SKIP_RPATH TRUE)
+endif ()
+
 set(USER_INC_DIR "" CACHE FILEPATH "Set paths to include folders")
 set(USER_LIB_DIR "" CACHE FILEPATH "Set paths to link folders")
 include_directories(${USER_INC_DIR})

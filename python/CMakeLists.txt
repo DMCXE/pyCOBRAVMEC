@@ -72,6 +72,19 @@ target_link_libraries(${f2py_module_name} cobravmec)
 set_target_properties(${f2py_module_name} PROPERTIES SUFFIX "${PYTHON_EXTENSION_MODULE_SUFFIX}")
 set_target_properties(${f2py_module_name} PROPERTIES PREFIX "")
 
+# Disable all RPATH handling to avoid duplicate LC_RPATH issues on macOS
+set_target_properties(${f2py_module_name} PROPERTIES
+  SKIP_BUILD_RPATH TRUE
+  BUILD_WITH_INSTALL_RPATH TRUE
+  INSTALL_RPATH ""
+  INSTALL_RPATH_USE_LINK_PATH FALSE
+)
+if (APPLE)
+  set_target_properties(${f2py_module_name} PROPERTIES
+    MACOSX_RPATH OFF
+  )
+endif()
+
 if (UNIX)
   if (APPLE)
     set_target_properties(${f2py_module_name} PROPERTIES
@@ -84,6 +97,45 @@ if (UNIX)
   endif()
 endif()
 
+# Create a Python script to fix duplicate rpaths on macOS (more portable than bash)
+if (APPLE)
+  set(FIX_RPATH_SCRIPT "${CMAKE_CURRENT_BINARY_DIR}/fix_rpath.py")
+  file(WRITE ${FIX_RPATH_SCRIPT} "#!/usr/bin/env python3
+import subprocess
+import sys
+import os
+
+def fix_duplicate_rpaths(so_file):
+    if not os.path.exists(so_file):
+        return
+    try:
+        result = subprocess.run(['otool', '-l', so_file], capture_output=True, text=True, check=True)
+        lines = result.stdout.split('\\n')
+        rpaths = []
+        for i, line in enumerate(lines):
+            if 'cmd LC_RPATH' in line:
+                for j in range(i + 1, min(i + 5, len(lines))):
+                    if 'path ' in lines[j]:
+                        path = lines[j].split('path ')[1].split(' (offset')[0].strip()
+                        rpaths.append(path)
+                        break
+        seen = set()
+        for rpath in rpaths:
+            if rpath in seen:
+                subprocess.run(['install_name_tool', '-delete_rpath', rpath, so_file],
+                               capture_output=True, check=False)
+                print(f'Removed duplicate RPATH: {rpath}')
+            else:
+                seen.add(rpath)
+    except Exception as e:
+        print(f'Warning: Failed to fix rpaths: {e}')
+
+if __name__ == '__main__':
+    if len(sys.argv) > 1:
+        fix_duplicate_rpaths(sys.argv[1])
+")
+endif()
+
 add_custom_command(TARGET ${f2py_module_name} POST_BUILD
   COMMAND ${CMAKE_COMMAND} -E copy_if_different
           "$<TARGET_FILE:${f2py_module_name}>"
@@ -93,6 +145,14 @@ add_custom_command(TARGET ${f2py_module_name} POST_BUILD
           "${CMAKE_CURRENT_SOURCE_DIR}/cobravmec/cobravmec.py"
   COMMENT "Copying _cobravmec and cobravmec.py into source package for editable use"
 )
+
+# Fix duplicate rpaths after build on macOS
+if (APPLE)
+  add_custom_command(TARGET ${f2py_module_name} POST_BUILD
+    COMMAND ${Python_EXECUTABLE} ${FIX_RPATH_SCRIPT} "$<TARGET_FILE:${f2py_module_name}>"
+    COMMENT "Fixing duplicate RPATH entries"
+  )
+endif()
 
 install(FILES ${python_mod_file} DESTINATION python/cobravmec)
 install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/cobravmec/__init__.py
