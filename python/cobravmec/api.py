@@ -332,14 +332,26 @@ def run_ballooning_from_data(
         bsupvmnc = np.asarray(w.bsupvmnc, dtype=np.float64)
 
     # Ensure arrays are Fortran-contiguous and properly shaped
-    # VMEC/simsopt uses (mnmax, ns) ordering which matches Fortran column-major
+    # Fortran expects arrays with shape (mnmax, ns) for rmnc/zmns/lmns
+    # and (mnmax_nyq, ns) for bmnc/bsupumnc/bsupvmnc
+    #
+    # simsopt's vmec.wout already stores arrays as (mnmax, ns) after transposing
+    # from the NetCDF file's (ns, mnmax) layout.
+    #
+    # We need to check the actual array shape and only transpose if the shape
+    # indicates (ns, mnmax) ordering (i.e., second dimension equals mnmax).
+    # But when ns == mnmax, we cannot distinguish, so we assume simsopt-style
+    # (mnmax, ns) ordering is already correct and skip transpose.
+    
     if rmnc.ndim == 2:
-        # Transpose if needed to match Fortran (mnmax, ns) layout
-        if rmnc.shape[0] == ns and rmnc.shape[1] == mnmax:
+        # Only transpose if shape clearly indicates (ns, mnmax) ordering
+        # i.e., shape[0] matches ns AND shape[1] matches mnmax AND ns != mnmax
+        if rmnc.shape[0] == ns and rmnc.shape[1] == mnmax and ns != mnmax:
             rmnc = rmnc.T
             zmns = zmns.T
             lmns = lmns.T
-        if bmnc.shape[0] == ns and bmnc.shape[1] == mnmax_nyq:
+        # For bmnc arrays, check against mnmax_nyq
+        if bmnc.shape[0] == ns and bmnc.shape[1] == mnmax_nyq and ns != mnmax_nyq:
             bmnc = bmnc.T
             bsupumnc = bsupumnc.T
             bsupvmnc = bsupvmnc.T
