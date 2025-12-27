@@ -15,6 +15,7 @@ set(cobravmec_sources
   ${CMAKE_CURRENT_SOURCE_DIR}/Sources/TVAL.f
   ${CMAKE_CURRENT_SOURCE_DIR}/Sources/obtain_zeta.f
   ${CMAKE_CURRENT_SOURCE_DIR}/Sources/order_input.f
+  ${CMAKE_CURRENT_SOURCE_DIR}/Sources/order_input_from_data.f90
   ${CMAKE_CURRENT_SOURCE_DIR}/Sources/geteigm.f
   ${CMAKE_CURRENT_SOURCE_DIR}/Sources/STM.f
   ${CMAKE_CURRENT_SOURCE_DIR}/Sources/get_ballooning_grate.f
