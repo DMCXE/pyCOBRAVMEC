@@ -36,7 +36,6 @@ from .api import (
     cobra_grate_path,
     load_wout,
     run_ballooning,
-    run_ballooning_from_data,
     write_cobra_grate,
 )
 
@@ -49,6 +48,5 @@ __all__ = [
     "cobra_grate_path",
     "load_wout",
     "run_ballooning",
-    "run_ballooning_from_data",
     "write_cobra_grate",
 ]

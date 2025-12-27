@@ -55,6 +55,9 @@ if (APPLE)
 endif ()
 if (${CMAKE_SYSTEM_NAME} MATCHES "Linux")
   add_definitions(-DLINUX)
+  # Find LAPACK/BLAS for Linux - required for SVD (dgesvd) and other linear algebra
+  find_package(LAPACK REQUIRED)
+  find_package(BLAS REQUIRED)
 endif()
 
 set(NETCDF_INC_PATH "" CACHE PATH "Path to netcdf include directory")

@@ -15,7 +15,6 @@ set(cobravmec_sources
   ${CMAKE_CURRENT_SOURCE_DIR}/Sources/TVAL.f
   ${CMAKE_CURRENT_SOURCE_DIR}/Sources/obtain_zeta.f
   ${CMAKE_CURRENT_SOURCE_DIR}/Sources/order_input.f
-  ${CMAKE_CURRENT_SOURCE_DIR}/Sources/order_input_from_data.f90
   ${CMAKE_CURRENT_SOURCE_DIR}/Sources/geteigm.f
   ${CMAKE_CURRENT_SOURCE_DIR}/Sources/STM.f
   ${CMAKE_CURRENT_SOURCE_DIR}/Sources/get_ballooning_grate.f
@@ -36,6 +35,16 @@ target_include_directories(cobravmec PUBLIC
   ${CMAKE_Fortran_MODULE_DIRECTORY}/libstell_mini
 )
 target_link_libraries(cobravmec PUBLIC libstell_mini)
+
+# Link LAPACK/BLAS on Linux (required for dgesvd and other linear algebra routines)
+if (${CMAKE_SYSTEM_NAME} MATCHES "Linux")
+  if (LAPACK_FOUND)
+    target_link_libraries(cobravmec PUBLIC ${LAPACK_LIBRARIES})
+  endif()
+  if (BLAS_FOUND)
+    target_link_libraries(cobravmec PUBLIC ${BLAS_LIBRARIES})
+  endif()
+endif()
 
 add_executable(xcobravmec ${CMAKE_CURRENT_SOURCE_DIR}/Sources/cobra.f)
 target_link_libraries(xcobravmec cobravmec)
